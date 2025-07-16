@@ -1,0 +1,24 @@
+.landing-container header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+  }
+  .brand-x {
+    color: #85db9f;
+  }
+  .hero-text {
+    padding: 2rem;
+  }
+  .hero-text h2 {
+    font-size: 2rem;
+  }
+  .hero-buttons button {
+    margin-right: 1rem;
+  }
+  .hero-image img {
+    max-width: 100%;
+    border: 1px solid rgba(0,0,0,0.1);
+  }
+  

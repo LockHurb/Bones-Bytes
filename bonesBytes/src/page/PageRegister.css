@@ -1,0 +1,18 @@
+.form-container {
+    max-width: 400px;
+    margin: 3rem auto;
+    display: flex;
+    flex-direction: column;
+  }
+  .form-container input {
+    margin: 0.5rem 0;
+    padding: 0.75rem;
+    border: 1px solid rgba(0,0,0,0.2);
+  }
+  .buttons {
+    display: flex;
+    justify-content: space-between;
+  }
+  .error {
+    color: red;
+  }
