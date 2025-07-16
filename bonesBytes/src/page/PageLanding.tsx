@@ -15,9 +15,6 @@ const PageLanding = () => (
       <section className="hero-text">
         <h2>Diagnóstico rápido<br /> con inteligencia artificial</h2>
         <p>Sube una radiografía.<br />Obtén resultados preliminares en segundos.</p>
-        <div className="hero-buttons">
-          <Link to="/upload" className="button-link"><button>Subir imagen</button></Link>
-        </div>
       </section>
       <section className="hero-image">
         {/* Aquí puedes incrustar un componente de canvas o img para el heatmap */}
