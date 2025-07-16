@@ -1,14 +1,24 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ref, child, get } from 'firebase/database';
 import { db } from '../firebase/firebase';
-import './PageLogin.css';
+import '../css/PageLogin.css';
 
 const PageLogin = () => {
   const [cedula, setCedula] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+
+  const handleInputChange = (field: 'cedula' | 'password') => (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (field === 'cedula') {
+      setCedula(value);
+    } else {
+      setPassword(value);
+    }
+    if (error) setError('');
+  };
 
   const handleLogin = async () => {
     const dbRef = ref(db);
@@ -17,7 +27,8 @@ const PageLogin = () => {
       if (snapshot.exists()) {
         const user = snapshot.val();
         if (user.password === password) {
-          navigate('/upload');
+          localStorage.setItem('userCedula', cedula);
+          navigate('/home');
         } else {
           setError('Contraseña incorrecta');
         }
@@ -29,22 +40,34 @@ const PageLogin = () => {
     }
   };
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    handleLogin();
+  };
+
   return (
     <div className="login-container">
       <div className="login-text">
         <h2>Iniciar Sesión</h2>
         <p>Bienvenido, por favor ingresa tus datos<br /> para acceder.</p>
       </div>
-      <form className="login-form" onSubmit = {(e) => {
-        e.preventDefault();
-        handleLogin();
-      }}>
-        <input type="text" placeholder="Usuario" value={cedula} onChange={e => setCedula(e.target.value)} />
-        <input type="password" placeholder="Contraseña" value={password} onChange={e => setPassword(e.target.value)} />
+      <form className="login-form" onSubmit={handleSubmit}>
+        {error && <div className="error-message">{error}</div>}
+        <input 
+          type="text" 
+          placeholder="Usuario"
+          value={cedula} 
+          onChange={handleInputChange('cedula')} 
+        />
+        <input 
+          type="password" 
+          placeholder="Contraseña"
+          value={password} 
+          onChange={handleInputChange('password')} 
+        />
         <div className="button-group">
-           <button type="button" onClick={() => navigate(-1)}>Volver</button>
-           <button type="submit">Entrar</button>
-           
+          <button type="button" onClick={() => navigate(-1)}>Volver</button>
+          <button type="submit">Entrar</button>
         </div>
       </form>
     </div>
