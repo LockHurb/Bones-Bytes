@@ -5,7 +5,7 @@ import './PageLanding.css';
 const PageLanding = () => (
   <div className="landing-container">
     <header>
-      <h1><span className="brand-x">Xray</span>Assist</h1>
+      <h1 className="brand-assist"><span className="brand-x">Xray</span>Assist</h1>
       <div>
         <Link to="/login" className="button-link"><button>Iniciar Sesión</button></Link>
         <Link to="/register" className="button-link"><button>Registrarse</button></Link>
@@ -13,11 +13,10 @@ const PageLanding = () => (
     </header>
     <main>
       <section className="hero-text">
-        <h2>Diagnóstico rápido con inteligencia artificial</h2>
+        <h2>Diagnóstico rápido<br /> con inteligencia artificial</h2>
         <p>Sube una radiografía.<br />Obtén resultados preliminares en segundos.</p>
         <div className="hero-buttons">
-          <Link to="/register" className="button-link"><button>Registrarse</button></Link>
-          <Link to="/upload" className="button-link"><button>más información</button></Link>
+          <Link to="/upload" className="button-link"><button>Subir imagen</button></Link>
         </div>
       </section>
       <section className="hero-image">

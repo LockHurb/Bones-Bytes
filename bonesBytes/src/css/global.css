@@ -2,7 +2,8 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(to bottom right, #c2ebc6, #a0ccb5);
+    background: white;
+    color: black;
     min-height: 100vh;
   }
   

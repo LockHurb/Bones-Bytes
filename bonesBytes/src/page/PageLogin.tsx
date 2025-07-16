@@ -30,16 +30,23 @@ const PageLogin = () => {
   };
 
   return (
-    <div className="form-container">
-      <h2>Iniciar Sesión</h2>
-      <p>Para acceder a XrayAssist</p>
-      <input placeholder="Cédula" value={cedula} onChange={e => setCedula(e.target.value)} />
-      <input type="password" placeholder="Contraseña" value={password} onChange={e => setPassword(e.target.value)} />
-      {error && <p className="error">{error}</p>}
-      <div className="buttons">
-        <Link to="/" className="button-link"><button>Volver</button></Link>
-        <button onClick={handleLogin}>Continuar</button>
+    <div className="login-container">
+      <div className="login-text">
+        <h2>Iniciar Sesión</h2>
+        <p>Bienvenido, por favor ingresa tus datos<br /> para acceder.</p>
       </div>
+      <form className="login-form" onSubmit = {(e) => {
+        e.preventDefault();
+        handleLogin();
+      }}>
+        <input type="text" placeholder="Usuario" value={cedula} onChange={e => setCedula(e.target.value)} />
+        <input type="password" placeholder="Contraseña" value={password} onChange={e => setPassword(e.target.value)} />
+        <div className="button-group">
+           <button type="button" onClick={() => navigate(-1)}>Volver</button>
+           <button type="submit">Entrar</button>
+           
+        </div>
+      </form>
     </div>
   );
 };
