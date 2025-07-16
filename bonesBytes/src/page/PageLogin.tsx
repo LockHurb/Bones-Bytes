@@ -17,7 +17,8 @@ const PageLogin = () => {
       if (snapshot.exists()) {
         const user = snapshot.val();
         if (user.password === password) {
-          navigate('/upload');
+          localStorage.setItem('userCedula', cedula);
+          navigate('/home');
         } else {
           setError('Contraseña incorrecta');
         }

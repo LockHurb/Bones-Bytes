@@ -45,8 +45,6 @@
 /* Estilos para los botones del header */
 .landing-container header button {
   background-color: #979ff0;
-  color: rgb(7, 7, 7);
-  border: none;
   padding: 5px 5px;
   padding-left: 10px;
   padding-right: 10px;
