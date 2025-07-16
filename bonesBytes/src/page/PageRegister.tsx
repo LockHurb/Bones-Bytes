@@ -40,21 +40,25 @@ const PageRegister: FC = () => {
   };
 
   return (
-    <div className="form-container">
-      <h2>Registrarse</h2>
-      <p>Para acceder a XrayAssist</p>
-      <input name="nombres" placeholder="Nombres" onChange={handleChange} />
-      <input name="apellidos" placeholder="Apellidos" onChange={handleChange} />
-      <input name="cedula" placeholder="Cédula" onChange={handleChange} />
-      <input name="email" placeholder="Correo electrónico" onChange={handleChange} />
-      <input name="telefono" placeholder="Número de teléfono (opcional)" onChange={handleChange} />
-      <input name="password" type="password" placeholder="Contraseña" onChange={handleChange} />
-      <div className="buttons">
-        <Link to="/" className="button-link">
-          <button>Volver</button>
-        </Link>
-        <button onClick={handleRegister}>Continuar</button>
+    <div className="login-container">
+      <div className="login-text">
+        <h2>Registrarse</h2>
+        <p>Para acceder a XrayAssist</p>
       </div>
+      <form className="login-form" onSubmit={e => { e.preventDefault(); handleRegister(); }}>
+        <input name="nombres" placeholder="Nombres" onChange={handleChange} />
+        <input name="apellidos" placeholder="Apellidos" onChange={handleChange} />
+        <input name="cedula" placeholder="Cédula" onChange={handleChange} />
+        <input name="email" placeholder="Correo electrónico" onChange={handleChange} />
+        <input name="telefono" placeholder="Número de teléfono (opcional)" onChange={handleChange} />
+        <input name="password" type="password" placeholder="Contraseña" onChange={handleChange} />
+        <div className="button-group">
+          <Link to="/" className="button-link">
+            <button type="button">Volver</button>
+          </Link>
+          <button type="submit">Continuar</button>
+        </div>
+      </form>
     </div>
   );
 };

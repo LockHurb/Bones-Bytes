@@ -1,14 +1,39 @@
 .upload-container {
-    max-width: 600px;
-    margin: 3rem auto;
-    text-align: center;
-  }
-  .dropzone {
-    margin: 2rem 0;
-    padding: 2rem;
-    border: 2px dashed rgba(0,0,0,0.2);
-  }
-  .buttons {
-    display: flex;
-    justify-content: space-between;
-  }
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.dropzone {
+  margin: 2rem 0;
+  padding: 2rem;
+  border: 2px dashed rgba(0,0,0,0.2);
+}
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 100px;
+}
+.button-link {
+  text-decoration: none;
+}
+.button-link button {
+  background-color: #979ff0;
+  color: #222;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.continuar-btn {
+  background-color: #979ff0; /* O el color que quieras */
+  color: #222;
+}
+.buttons button {
+  background-color: #979ff0;
+  color: #222;
+  border-radius: 6px;
+  cursor: pointer;
+}

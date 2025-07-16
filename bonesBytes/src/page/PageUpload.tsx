@@ -11,7 +11,7 @@ const PageUpload = () => (
     </div>
     <div className="buttons">
       <Link to="/" className="button-link"><button>Cancelar</button></Link>
-      <button>Continuar</button>
+      <button className="continuar-btn">Continuar</button>
     </div>
   </div>
 );
