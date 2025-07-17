@@ -29,7 +29,7 @@ def predict_from_tensor(input_tensor: torch.Tensor, model: PneumoniaCNN):
         output = model(input_tensor)
         confidence = torch.softmax(output, dim=1).max().item()
         prediction_index = torch.argmax(output, dim=1).item()
-        label = "Neumonía" if prediction_index == 1 else "Normal"
+        label = "Neumonía" if prediction_index == 0 else "Normal"
     return output, confidence, prediction_index, label
 
 

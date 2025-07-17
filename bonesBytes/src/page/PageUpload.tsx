@@ -119,7 +119,7 @@ const PageUpload: FC = () => {
       const { prediction, confidence } = data;
       setModalContent({
         title: 'Resultado del Análisis',
-        message: `✅ Diagnóstico: ${prediction}\n🔬 Confianza: ${(confidence * 100).toFixed(2)}%`,
+        message: ` Diagnóstico: ${prediction}\n Confianza: ${(confidence * 100).toFixed(2)}%`,
       });
       setModalOpen(true);
   
@@ -198,7 +198,12 @@ const PageUpload: FC = () => {
         <div className="modal-overlay">
           <div className="modal-content">
             <h2 style={modalContent.isError ? { color: '#ffb4b4' } : {}}>{modalContent.title}</h2>
-            <p style={modalContent.isError ? { color: '#ffd6d6' } : {}}>{modalContent.message.split('\n').map((line, i) => <span key={i}>{line}<br/></span>)}</p>
+            <p 
+              className={modalContent.title === 'Resultado del Análisis' ? 'diagnosis-result' : undefined}
+              style={modalContent.isError ? { color: '#ffd6d6' } : {}}
+            >
+              {modalContent.message.split('\n').map((line, i) => <span key={i}>{line}<br/></span>)}
+            </p>
             {/* Mensaje de advertencia */}
             {!modalContent.isError && (
               <div className="modal-warning">
