@@ -2,7 +2,7 @@ import React, { type FC, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ref, get } from 'firebase/database';
 import { db } from '../firebase/firebase';
-import './PageHome.css';
+import '../css/PageHome.css';
 
 interface Usuario {
   nombres: string;

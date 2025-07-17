@@ -2,7 +2,7 @@ import React, { type FC, useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ref, get, set } from 'firebase/database';
 import { db } from '../firebase/firebase';
-import './PagePerfil.css';
+import '../css/PagePerfil.css';
 
 interface Usuario {
   nombres: string;
@@ -18,6 +18,14 @@ const PagePerfil: FC = () => {
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const [showPasswordPrompt, setShowPasswordPrompt] = useState(false);
+  const [showChangePassword, setShowChangePassword] = useState(false);
+  const [passwordInput, setPasswordInput] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [editData, setEditData] = useState<Usuario | null>(null);
+  const [error, setError] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
@@ -91,6 +99,94 @@ const PagePerfil: FC = () => {
     fileInputRef.current?.click();
   };
 
+  // Nueva función para manejar el click en editar
+  const handleEditClick = () => {
+    setShowPasswordPrompt(true);
+    setError('');
+  };
+
+  // Validar contraseña antes de permitir edición
+  const handlePasswordConfirm = async () => {
+    if (!usuario) return;
+    setError('');
+    try {
+      const snapshot = await get(ref(db, `usuarios/${usuario.cedula}`));
+      if (snapshot.exists()) {
+        const userData = snapshot.val();
+        if (userData.password === passwordInput) {
+          setEditMode(true);
+          setEditData({ ...usuario });
+          setShowPasswordPrompt(false);
+          setPasswordInput('');
+        } else {
+          setError('Contraseña incorrecta');
+        }
+      }
+    } catch (err) {
+      setError('Error al validar la contraseña');
+    }
+  };
+
+  // Guardar cambios en la base de datos
+  const handleSave = async () => {
+    if (!editData) return;
+    setError('');
+    try {
+      await set(ref(db, `usuarios/${editData.cedula}`), { ...editData, fotoPerfil: usuario?.fotoPerfil });
+      setUsuario(editData);
+      setEditMode(false);
+      alert('Perfil actualizado correctamente');
+    } catch (err) {
+      setError('Error al actualizar el perfil');
+    }
+  };
+
+  // Manejar cambios en los campos editables
+  const handleEditChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setEditData(prev => prev ? { ...prev, [name]: value } : null);
+  };
+
+  const handleChangePasswordClick = () => {
+    setShowChangePassword(true);
+    setError('');
+    setPasswordInput('');
+    setNewPassword('');
+    setConfirmPassword('');
+  };
+
+  const handleChangePassword = async () => {
+    if (!usuario) return;
+    setError('');
+    if (!passwordInput || !newPassword || !confirmPassword) {
+      setError('Completa todos los campos');
+      return;
+    }
+    if (newPassword.length < 6) {
+      setError('La nueva contraseña debe tener al menos 6 caracteres');
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      setError('Las contraseñas nuevas no coinciden');
+      return;
+    }
+    try {
+      const snapshot = await get(ref(db, `usuarios/${usuario.cedula}`));
+      if (snapshot.exists()) {
+        const userData = snapshot.val();
+        if (userData.password !== passwordInput) {
+          setError('La contraseña actual es incorrecta');
+          return;
+        }
+        await set(ref(db, `usuarios/${usuario.cedula}/password`), newPassword);
+        setShowChangePassword(false);
+        alert('Contraseña actualizada correctamente');
+      }
+    } catch (err) {
+      setError('Error al cambiar la contraseña');
+    }
+  };
+
   if (loading) {
     return (
       <div className="perfil-container">
@@ -157,45 +253,107 @@ const PagePerfil: FC = () => {
           <div className="info-section">
             <div className="info-group">
               <h3>Información Personal</h3>
-              
               <div className="info-item">
                 <label>Nombres:</label>
-                <span>{usuario.nombres}</span>
+                {editMode ? (
+                  <input name="nombres" value={editData?.nombres || ''} onChange={handleEditChange} />
+                ) : (
+                  <span>{usuario.nombres}</span>
+                )}
               </div>
-              
               <div className="info-item">
                 <label>Apellidos:</label>
-                <span>{usuario.apellidos}</span>
+                {editMode ? (
+                  <input name="apellidos" value={editData?.apellidos || ''} onChange={handleEditChange} />
+                ) : (
+                  <span>{usuario.apellidos}</span>
+                )}
               </div>
-              
               <div className="info-item">
                 <label>Cédula:</label>
                 <span>{usuario.cedula}</span>
               </div>
-              
               <div className="info-item">
                 <label>Número de Teléfono:</label>
-                <span>{usuario.telefono || 'No especificado'}</span>
+                {editMode ? (
+                  <input name="telefono" value={editData?.telefono || ''} onChange={handleEditChange} />
+                ) : (
+                  <span>{usuario.telefono || 'No especificado'}</span>
+                )}
               </div>
-              
               <div className="info-item">
                 <label>Correo Electrónico:</label>
-                <span>{usuario.email}</span>
-              </div>
-              
-              <div className="info-item">
-                <label>Ubicación:</label>
-                <span>Por definir</span>
+                {editMode ? (
+                  <input name="email" value={editData?.email || ''} onChange={handleEditChange} />
+                ) : (
+                  <span>{usuario.email}</span>
+                )}
               </div>
             </div>
           </div>
 
           <div className="actions-section">
-            <button className="edit-btn">Editar Información</button>
-            <button className="change-password-btn">Cambiar Contraseña</button>
+            {editMode ? (
+              <>
+                <button className="edit-btn" onClick={handleSave}>Guardar Cambios</button>
+                <button className="change-password-btn" onClick={() => setEditMode(false)}>Cancelar</button>
+              </>
+            ) : (
+              <button className="edit-btn" onClick={handleEditClick}>Editar Información</button>
+            )}
+            <button className="change-password-btn" onClick={handleChangePasswordClick}>Cambiar Contraseña</button>
           </div>
         </div>
       </main>
+
+      {showPasswordPrompt && (
+        <div className="password-prompt">
+          <div className="prompt-content">
+            <h4>Confirma tu contraseña para editar</h4>
+            <input 
+              type="password" 
+              value={passwordInput} 
+              onChange={e => setPasswordInput(e.target.value)} 
+              placeholder="Contraseña actual"
+            />
+            <div className="prompt-buttons">
+              <button onClick={handlePasswordConfirm}>Confirmar</button>
+              <button onClick={() => setShowPasswordPrompt(false)}>Cancelar</button>
+            </div>
+            {error && <div className="error-message">{error}</div>}
+          </div>
+        </div>
+      )}
+      {showChangePassword && (
+        <div className="password-prompt">
+          <div className="prompt-content">
+            <h4>Cambiar contraseña</h4>
+            <input
+              type="password"
+              value={passwordInput}
+              onChange={e => setPasswordInput(e.target.value)}
+              placeholder="Contraseña actual"
+            />
+            <input
+              type="password"
+              value={newPassword}
+              onChange={e => setNewPassword(e.target.value)}
+              placeholder="Nueva contraseña"
+            />
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={e => setConfirmPassword(e.target.value)}
+              placeholder="Confirmar nueva contraseña"
+            />
+            <div className="prompt-buttons">
+              <button onClick={handleChangePassword}>Cambiar</button>
+              <button onClick={() => setShowChangePassword(false)}>Cancelar</button>
+            </div>
+            {error && <div className="error-message">{error}</div>}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

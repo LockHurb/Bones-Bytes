@@ -2,7 +2,7 @@ import React, { type FC, useState, type ChangeEvent } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { ref, set, get } from 'firebase/database';
 import { db } from '../firebase/firebase';  // Asegúrate de que en firebase.ts exportes `db`
-import './PageRegister.css';
+import '../css/PageRegister.css';
 
 interface DatosUsuario {
   nombres: string;
@@ -27,14 +27,33 @@ const PageRegister: FC = () => {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setDatos(prev => ({ ...prev, [name]: value }));
+    
+    // Validación especial para cédula
+    if (name === 'cedula') {    // Solo permitir números y máximo 10 dígitos
+      const numericValue = value.replace(/\D/g, '');
+      if (numericValue.length <= 10) {
+        setDatos(prev => ({ ...prev, [name]: numericValue }));
+      }
+    } else {
+      setDatos(prev => ({ ...prev, [name]: value }));
+    }
+    
     // Limpiar error cuando el usuario empiece a escribir
     if (error) setError('');
+  };
+
+  const validateCedula = (cedula: string): boolean => {
+    return cedula.length === 10 && /^\d{10}$/.test(cedula);
   };
 
   const handleRegister = async () => {
     if (!datos.cedula || !datos.password) {
       setError('Por favor completa todos los campos obligatorios');
+      return;
+    }
+
+    if (!validateCedula(datos.cedula)) {
+      setError('Cédula inválida');
       return;
     }
 
@@ -47,7 +66,6 @@ const PageRegister: FC = () => {
       
       if (snapshot.exists()) {
         setError('Usuario ya registrado. Por favor, inicia sesión o usa una cédula diferente.');
-        setLoading(false);
         return;
       }
 
@@ -63,13 +81,18 @@ const PageRegister: FC = () => {
     }
   };
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    handleRegister();
+  };
+
   return (
     <div className="login-container">
       <div className="login-text">
         <h2>Registrarse</h2>
         <p>Para acceder a XrayAssist</p>
       </div>
-      <form className="login-form" onSubmit={e => { e.preventDefault(); handleRegister(); }}>
+      <form className="login-form" onSubmit={handleSubmit}>
         <input name="nombres" placeholder="Nombres" onChange={handleChange} />
         <input name="apellidos" placeholder="Apellidos" onChange={handleChange} />
         <input name="cedula" placeholder="Cédula" onChange={handleChange} />

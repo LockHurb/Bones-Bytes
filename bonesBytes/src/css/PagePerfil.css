@@ -135,11 +135,11 @@
 }
 
 .info-group h3 {
-  margin: 0 0 1.5rem 0;
+  margin: 0 0 0.5rem 0;
   font-size: 1.3rem;
   font-weight: 600;
   color: #f0f0f0;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   padding-bottom: 0.5rem;
 }
 
@@ -167,6 +167,21 @@
   text-align: right;
   flex: 1;
   margin-left: 1rem;
+}
+
+.info-item input {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  flex: 1;
+  margin-left: 1rem;
+}
+
+.info-item input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .actions-section {
@@ -220,6 +235,92 @@
 
 .volver-btn:hover {
   background: rgba(255, 255, 255, 0.3);
+}
+
+/* --- MODAL EMERGENTE DE CONTRASEÑA --- */
+.password-prompt {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  color: #222;
+  border-radius: 14px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  padding: 2rem;
+  min-width: 320px;
+  max-width: 90vw;
+  z-index: 9999;
+  border: 2px solid #979ff0;
+}
+
+.prompt-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+}
+
+.prompt-content h4 {
+  margin: 0 0 0.5em 0;
+  font-size: 1.2rem;
+  color: #764ba2;
+  width: 100%;
+  text-align: center;
+}
+
+.prompt-content input[type="password"] {
+  padding: 0.7em 1em;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  width: 100%;
+  margin-bottom: 0.5em;
+  text-align: center;
+}
+
+.prompt-buttons {
+  display: flex;
+  gap: 0.5em;
+  width: 100%;
+}
+
+.prompt-buttons button {
+  background: #979ff0;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75em;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.18s;
+  flex: 1;
+}
+
+.prompt-buttons button:hover {
+  background: #764ba2;
+}
+
+.prompt-buttons button:last-child {
+  background: #e0e0e0;
+  color: #333;
+}
+
+.prompt-buttons button:last-child:hover {
+  background: #bdbdbd;
+}
+
+.error-message {
+  color: #ff6b6b;
+  background: #fff0f0;
+  border: 1px solid #ffbdbd;
+  border-radius: 6px;
+  padding: 0.5em 1em;
+  font-size: 0.95rem;
+  margin-top: 0.5em;
+  width: 100%;
 }
 
 @media (max-width: 768px) {

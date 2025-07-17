@@ -1,43 +1,43 @@
 .login-container {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 100px;
-  min-height: 70vh;
-  background: white;
-  padding: 40px 0;
+  justify-content: flex-start;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   font-size: 1.6rem;
   max-width: 100%;
   margin: 0 auto;
-  padding-top: 100px;
-  padding-bottom: 100px;
-  padding-left: 100px;
-  padding-right: 240px;
+  padding: 20px 0 0 0;
 }
 
 .login-text {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  flex: 1;
-  text-align: left;
-  padding-left: 100px;
-  padding-right: 0;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  margin-bottom: 32px;
+  color: white;
 }
 
 .login-text h2 {
   margin-bottom: 18px;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .login-text p {
   font-size: 1.2rem;
   margin-top: 0;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .login-form {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.10);
-  padding: 40px 32px 32px 32px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -52,26 +52,33 @@
   font-size: 1.1rem;
   padding: 12px;
   border-radius: 6px;
-  border: 1px solid #ccc;
-  background: #fafbfc;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  backdrop-filter: blur(10px);
+}
+
+.login-form input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .login-form button {
   width: 100%;
   padding: 10px;
   font-size: 1.1rem;
-  background: #979ff0;
-  color: #222;
-  border: none;
-  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
   margin-top: 8px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-  transition: background 0.2s;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s;
 }
 .login-form button:hover {
-  background: #7a87e6;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
 }
 .button-group {
   display: flex;
@@ -86,7 +93,7 @@
 }
 
 .error {
-  color: red;
+  color: #ff6b6b;
 }
 
 .error-message {

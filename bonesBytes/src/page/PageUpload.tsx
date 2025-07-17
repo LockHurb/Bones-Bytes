@@ -1,8 +1,12 @@
 import React, { type FC, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+<<<<<<< HEAD
 import './PageUpload.css';
 import { ref, set, get } from "firebase/database";
 import { db } from "../firebase/firebase";
+=======
+import '../css/PageUpload.css';
+>>>>>>> f4702828dc72ab2efc0c047cf818aa4e66ff6448
 
 const PageUpload: FC = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -134,7 +138,7 @@ const PageUpload: FC = () => {
       <main className="upload-main">
         <div className="upload-section">
           <h2>Sube tu radiografía</h2>
-          <p>Selecciona o arrastra una imagen de rayos X para análisis</p>
+          <p>Selecciona o arrastra una imagen para análisis</p>
           
           <div 
             className={`dropzone ${dragActive ? 'drag-active' : ''} ${selectedFile ? 'has-file' : ''}`}

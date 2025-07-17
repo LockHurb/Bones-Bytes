@@ -25,28 +25,36 @@
 .user-section {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 1.5rem;
   position: relative;
 }
 
 .user-name {
-  font-size: 1.1rem;
-  font-weight: 500;
+  font-size: 1.3rem;
+  font-weight: 600;
   color: white;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
 }
 
 .user-avatar {
-  width: 40px;
-  height: 40px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   cursor: pointer;
-  transition: transform 0.2s ease;
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  border: 3px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
   position: relative;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .user-avatar:hover {
-  transform: scale(1.1);
+  transform: scale(1.08);
+  border-color: #979ff0;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.22);
 }
 
 .user-avatar img {
@@ -59,30 +67,33 @@
 .user-avatar::after {
   content: '▼';
   position: absolute;
-  bottom: -8px;
+  bottom: -14px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 0.7rem;
-  color: rgba(255, 255, 255, 0.8);
-  transition: transform 0.2s ease;
+  font-size: 1.1rem;
+  color: #fff;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.3);
+  pointer-events: none;
 }
 
 .user-avatar:hover::after {
-  transform: translateX(-50%) rotate(180deg);
+  color: #979ff0;
 }
 
 .user-menu {
   position: absolute;
-  top: 100%;
+  top: 110%;
   right: 0;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  min-width: 200px;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  min-width: 220px;
   z-index: 1000;
   margin-top: 0.5rem;
   overflow: hidden;
   animation: slideDown 0.2s ease;
+  border: 1px solid #eee;
 }
 
 @keyframes slideDown {
@@ -97,11 +108,16 @@
 }
 
 .menu-item {
-  padding: 1rem 1.5rem;
+  padding: 1.1rem 1.5rem;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background 0.18s, color 0.18s, transform 0.18s;
   color: #333;
   border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+  font-size: 1.05rem;
 }
 
 .menu-item:last-child {
@@ -109,12 +125,14 @@
 }
 
 .menu-item:hover {
-  background-color: #f8f9fa;
+  background: #f3f6ff;
+  color: #764ba2;
+  transform: translateX(5px);
 }
 
 .menu-item span {
-  font-size: 0.95rem;
-  font-weight: 500;
+  font-size: 1.08rem;
+  font-weight: 600;
 }
 
 .home-main {
