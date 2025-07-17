@@ -126,6 +126,31 @@
   justify-content: space-between;
 }
 
+.landing-warning {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background: rgba(255, 255, 255, 0.13);
+  border: 1.5px solid #ffd700;
+  border-radius: 10px;
+  padding: 1rem 1.5rem;
+  margin: 1.2rem 0 0.5rem 0;
+  box-shadow: 0 2px 12px rgba(255, 215, 0, 0.08);
+  gap: 0.7rem;
+}
+.landing-warning-icon {
+  font-size: 2rem;
+  color: #ffd700;
+  filter: drop-shadow(0 0 6px #ffd70088);
+}
+.landing-warning-text {
+  color: #fffbe6;
+  font-size: 1.08rem;
+  font-weight: 600;
+  text-shadow: 0 1px 6px #764ba2cc;
+  letter-spacing: 0.2px;
+}
+
 
   
 

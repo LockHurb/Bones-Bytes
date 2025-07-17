@@ -176,6 +176,94 @@
   transform: none;
 }
 
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(40, 30, 70, 0.7);
+  backdrop-filter: blur(6px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 24px;
+  box-shadow: 0 12px 48px rgba(0,0,0,0.25);
+  padding: 3rem 2.5rem;
+  text-align: center;
+  max-width: 90vw;
+  min-width: 320px;
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  border: 2px solid rgba(255,255,255,0.2);
+}
+
+.modal-content h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 2px 8px rgba(76, 71, 120, 0.2);
+}
+
+.modal-content p {
+  font-size: 1.3rem;
+  margin-bottom: 1.5rem;
+  color: #e0e7ff;
+}
+
+.modal-close-btn {
+  background: rgba(255,255,255,0.2);
+  border: 1px solid rgba(255,255,255,0.3);
+  color: white;
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: 600;
+  transition: background 0.2s, transform 0.2s;
+  margin-top: 1rem;
+}
+
+.modal-close-btn:hover {
+  background: rgba(151, 159, 240, 0.4);
+  transform: translateY(-2px) scale(1.04);
+}
+
+.modal-warning {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.13);
+  border: 1.5px solid #ffd700;
+  border-radius: 10px;
+  padding: 1rem 1.5rem;
+  margin: 1.2rem 0 0.5rem 0;
+  box-shadow: 0 2px 12px rgba(255, 215, 0, 0.08);
+  gap: 0.7rem;
+}
+.modal-warning-icon {
+  font-size: 2rem;
+  color: #ffd700;
+  filter: drop-shadow(0 0 6px #ffd70088);
+}
+.modal-warning-text {
+  color: #fffbe6;
+  font-size: 1.08rem;
+  font-weight: 600;
+  text-shadow: 0 1px 6px #764ba2cc;
+  letter-spacing: 0.2px;
+}
+
 @media (max-width: 768px) {
   .upload-header {
     padding: 1rem;
@@ -207,5 +295,18 @@
   .cancel-btn, .continue-btn {
     width: 100%;
     max-width: 200px;
+  }
+}
+
+@media (max-width: 600px) {
+  .modal-content {
+    padding: 1.5rem 0.5rem;
+    min-width: 0;
+  }
+  .modal-content h2 {
+    font-size: 1.5rem;
+  }
+  .modal-content p {
+    font-size: 1rem;
   }
 }

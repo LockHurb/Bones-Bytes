@@ -104,10 +104,7 @@ const PageHome: FC = () => {
             <h3>📤 Subir Imágenes</h3>
             <p>Sube tus imágenes de rayos X para análisis</p>
           </div>
-          <div className="feature-card">
-            <h3>📊 Historial</h3>
-            <p>Revisa tus análisis anteriores</p>
-          </div>
+          {/* Historial eliminado */}
         </div>
       </main>
     </div>

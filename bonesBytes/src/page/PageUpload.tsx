@@ -9,6 +9,8 @@ const PageUpload: FC = () => {
   const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState<{title: string, message: string, isError?: boolean} | null>(null);
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
@@ -55,7 +57,8 @@ const PageUpload: FC = () => {
 
   const handleContinue = async () => {
     if (!selectedFile) {
-      alert("Por favor selecciona una imagen primero");
+      setModalContent({ title: 'Imagen no seleccionada', message: 'Por favor selecciona una imagen primero.', isError: true });
+      setModalOpen(true);
       return;
     }
   
@@ -69,7 +72,8 @@ const PageUpload: FC = () => {
         base64,
         estado: "pendiente",
       });
-      alert("Imagen subida a Firebase. Esperando confirmación...");
+      setModalContent({ title: 'Imagen subida', message: 'Imagen subida a Firebase. Esperando confirmación...' });
+      setModalOpen(true);
   
       // 2) Polling para esperar que Firebase lo guarde
       let exists = false;
@@ -82,7 +86,8 @@ const PageUpload: FC = () => {
         await new Promise((r) => setTimeout(r, 1000));
       }
       if (!exists) {
-        alert("⚠️ La imagen no se guardó correctamente en Firebase.");
+        setModalContent({ title: 'Error', message: '⚠️ La imagen no se guardó correctamente en Firebase.', isError: true });
+        setModalOpen(true);
         return;
       }
   
@@ -99,24 +104,29 @@ const PageUpload: FC = () => {
   
       // 5) Si el status no es OK, muestra el error
       if (!res.ok) {
-        alert("⚠️ Error al obtener el diagnóstico:\n" + (data.error || res.statusText));
+        setModalContent({ title: 'Error', message: `⚠️ Error al obtener el diagnóstico:\n${data.error || res.statusText}`, isError: true });
+        setModalOpen(true);
         return;
       }
       // 6) Si el backend envía error en el JSON
       if (data.error) {
-        alert("⚠️ Error del servidor:\n" + data.error);
+        setModalContent({ title: 'Error del servidor', message: `⚠️ Error del servidor:\n${data.error}`, isError: true });
+        setModalOpen(true);
         return;
       }
   
       // 7) Todo OK, extrae y muestra resultado
       const { prediction, confidence } = data;
-      alert(
-        `✅ Diagnóstico: ${prediction}\n🔬 Confianza: ${(confidence * 100).toFixed(2)}%`
-      );
+      setModalContent({
+        title: 'Resultado del Análisis',
+        message: `✅ Diagnóstico: ${prediction}\n🔬 Confianza: ${(confidence * 100).toFixed(2)}%`,
+      });
+      setModalOpen(true);
   
     } catch (error) {
       console.error("Error al subir la imagen:", error);
-      alert("❌ Error al procesar la imagen");
+      setModalContent({ title: 'Error', message: '❌ Error al procesar la imagen', isError: true });
+      setModalOpen(true);
     }
   };
   
@@ -184,6 +194,24 @@ const PageUpload: FC = () => {
           </div>
         </div>
       </main>
+      {modalOpen && modalContent && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2 style={modalContent.isError ? { color: '#ffb4b4' } : {}}>{modalContent.title}</h2>
+            <p style={modalContent.isError ? { color: '#ffd6d6' } : {}}>{modalContent.message.split('\n').map((line, i) => <span key={i}>{line}<br/></span>)}</p>
+            {/* Mensaje de advertencia */}
+            {!modalContent.isError && (
+              <div className="modal-warning">
+                <span className="modal-warning-icon">⚠️</span>
+                <span className="modal-warning-text">
+                  Esto no es una verificación auténtica. Consulte con su doctor, ya que este resultado no es 100% confiable.
+                </span>
+              </div>
+            )}
+            <button className="modal-close-btn" onClick={() => setModalOpen(false)}>Cerrar</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
