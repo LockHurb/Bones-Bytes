@@ -1,6 +1,8 @@
 import React, { type FC, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './PageUpload.css';
+import { ref, set, get } from "firebase/database";
+import { db } from "../firebase/firebase";
 
 const PageUpload: FC = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -42,16 +44,83 @@ const PageUpload: FC = () => {
     navigate('/home');
   };
 
-  const handleContinue = () => {
-    if (selectedFile) {
-      // Aquí iría la lógica para procesar la imagen
-      console.log('Archivo seleccionado:', selectedFile.name);
-      // Por ahora solo mostramos un alert
-      alert('Imagen subida exitosamente: ' + selectedFile.name);
-    } else {
-      alert('Por favor selecciona una imagen primero');
+  const convertToBase64 = async (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = (error) => reject(error);
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleContinue = async () => {
+    if (!selectedFile) {
+      alert("Por favor selecciona una imagen primero");
+      return;
+    }
+  
+    try {
+      // 1) Convierte a base64 y guarda en Realtime DB
+      const base64 = await convertToBase64(selectedFile);
+      const imageId = Date.now().toString();
+      const imageRef = ref(db, `radiografias/${imageId}`);
+  
+      await set(imageRef, {
+        base64,
+        estado: "pendiente",
+      });
+      alert("Imagen subida a Firebase. Esperando confirmación...");
+  
+      // 2) Polling para esperar que Firebase lo guarde
+      let exists = false;
+      for (let i = 0; i < 10; i++) {
+        const snapshot = await get(imageRef);
+        if (snapshot.exists()) {
+          exists = true;
+          break;
+        }
+        await new Promise((r) => setTimeout(r, 1000));
+      }
+      if (!exists) {
+        alert("⚠️ La imagen no se guardó correctamente en Firebase.");
+        return;
+      }
+  
+      // 3) Llama al backend
+      const res = await fetch("http://localhost:5000/predict-firebase", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ image_id: imageId }),
+      });
+      const data = await res.json();
+  
+      // 4) Debug: mira qué responde la IA
+      console.log("🔍 IA response:", data);
+  
+      // 5) Si el status no es OK, muestra el error
+      if (!res.ok) {
+        alert("⚠️ Error al obtener el diagnóstico:\n" + (data.error || res.statusText));
+        return;
+      }
+      // 6) Si el backend envía error en el JSON
+      if (data.error) {
+        alert("⚠️ Error del servidor:\n" + data.error);
+        return;
+      }
+  
+      // 7) Todo OK, extrae y muestra resultado
+      const { prediction, confidence } = data;
+      alert(
+        `✅ Diagnóstico: ${prediction}\n🔬 Confianza: ${(confidence * 100).toFixed(2)}%`
+      );
+  
+    } catch (error) {
+      console.error("Error al subir la imagen:", error);
+      alert("❌ Error al procesar la imagen");
     }
   };
+  
+  
 
   return (
     <div className="upload-container">
